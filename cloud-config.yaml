@@ -1,0 +1,49 @@
+#cloud-config
+#
+##hostname
+hostname: "e11coreostest01.mercury.corp"
+
+# include one or more SSH public keys
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAA...7Wy9GGHYcZi1pICKS9IR jude.x.zhu@newegg.com #Paste your public rsa-key here.
+# Network
+coreos:
+  units:
+    - name: 00-internal.network
+      runtime: true
+      content: |
+        [Match]
+        Name=ens192
+
+        [Network]
+        DNS=172.16.72.1
+        DNS=172.16.72.2
+        Address=172.16.164.98/24
+        Gateway=172.16.164.240
+
+        [Route]
+        Gateway=172.16.164.1
+        Destination=172.16.0.0/12
+
+        [Route]
+        Gateway=172.16.164.1
+        Destination=10.0.0.0/8
+    - name: settimezone.service
+      command: start
+      content: |
+        [Unit]
+        Description=Set the time zone
+
+        [Service]
+        ExecStart=/usr/bin/timedatectl set-timezone America/Los_Angeles
+        RemainAfterExit=yes
+        Type=oneshot
+    - name: update-engine.service
+      mask: true
+    - name: locksmithd.service
+      mask: true
+write_files:
+  - path: /etc/systemd/timesyncd.conf
+    content: |
+      [Time]
+      NTP=10.1.37.52 10.1.39.81 10.1.39.82

@@ -1,11 +1,12 @@
 #cloud-config
 #
 ##hostname
-hostname: "e11coreostest01.mercury.corp"
+hostname: "coreos-2"
 
 # include one or more SSH public keys
 ssh_authorized_keys:
-  - ssh-rsa AAAAB3NzaC1yc2EAAAA...7Wy9GGHYcZi1pICKS9IR jude.x.zhu@newegg.com #Paste your public rsa-key here.
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCl2xkDg5/k4VVlm0X1jrqcgVMOj/PjGfLStkYP0Drkl5FaopomlcwZtdwfPpjL5gH27PCjc5hGgB3wNZOOVK7CMEs0tvYH1WOKrUFPw63cd3iIZ1u6zvMRYUU1YvYx8pif/08M1P96ywjyI7M9e+a0v/RvKOXDVTNez5+53dOqlL+n07wW5NH7Bm5hq9AJFSnk+nEqLu8PuGrjREqSH3XAiwaTuITtbVHDpHblGbCKAymBt6yjKe8BgFziE9CO//e+WoWXsSEJMgsK1DHgE3/K5babWUgsr1oRp0lN3VnJ9yfBjw9HgEgUInQtAAGimqPJcjW7j6jX4gB2KXGWXPo/ core@10.1.41.202
+
 # Network
 coreos:
   units:
@@ -13,21 +14,17 @@ coreos:
       runtime: true
       content: |
         [Match]
-        Name=ens192
+        Name=ens32
 
         [Network]
-        DNS=172.16.72.1
-        DNS=172.16.72.2
-        Address=172.16.164.98/24
-        Gateway=172.16.164.240
+        DNS=4.2.2.1
+        Address=10.1.41.203/24
+        Gateway=10.1.41.200
 
         [Route]
-        Gateway=172.16.164.1
-        Destination=172.16.0.0/12
-
-        [Route]
-        Gateway=172.16.164.1
+        Gateway=10.1.41.1
         Destination=10.0.0.0/8
+
     - name: settimezone.service
       command: start
       content: |

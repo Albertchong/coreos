@@ -1,0 +1,17 @@
+{
+    "CN": "newegg.ie",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "CA",
+            "O": "Newegg Inc.",
+            "ST": "Los Angeles",
+            "OU": "E7"
+        }
+    ]
+}
+

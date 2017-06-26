@@ -1,0 +1,46 @@
+#cloud-config
+#
+##hostname
+hostname: "coreos-2"
+
+# include one or more SSH public keys
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCl2xkDg5/k4VVlm0X1jrqcgVMOj/PjGfLStkYP0Drkl5FaopomlcwZtdwfPpjL5gH27PCjc5hGgB3wNZOOVK7CMEs0tvYH1WOKrUFPw63cd3iIZ1u6zvMRYUU1YvYx8pif/08M1P96ywjyI7M9e+a0v/RvKOXDVTNez5+53dOqlL+n07wW5NH7Bm5hq9AJFSnk+nEqLu8PuGrjREqSH3XAiwaTuITtbVHDpHblGbCKAymBt6yjKe8BgFziE9CO//e+WoWXsSEJMgsK1DHgE3/K5babWUgsr1oRp0lN3VnJ9yfBjw9HgEgUInQtAAGimqPJcjW7j6jX4gB2KXGWXPo/ core@10.1.41.202
+
+# Network
+coreos:
+  units:
+    - name: 00-internal.network
+      runtime: true
+      content: |
+        [Match]
+        Name=ens32
+
+        [Network]
+        DNS=4.2.2.1
+        Address=10.1.41.203/24
+        Gateway=10.1.41.200
+
+        [Route]
+        Gateway=10.1.41.1
+        Destination=10.0.0.0/8
+
+    - name: settimezone.service
+      command: start
+      content: |
+        [Unit]
+        Description=Set the time zone
+
+        [Service]
+        ExecStart=/usr/bin/timedatectl set-timezone America/Los_Angeles
+        RemainAfterExit=yes
+        Type=oneshot
+    - name: update-engine.service
+      mask: true
+    - name: locksmithd.service
+      mask: true
+write_files:
+  - path: /etc/systemd/timesyncd.conf
+    content: |
+      [Time]
+      NTP=10.1.37.52 10.1.39.81 10.1.39.82

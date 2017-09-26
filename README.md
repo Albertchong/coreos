@@ -17,7 +17,7 @@ k8smaster3 10.1.41.195
 k8sproxy1 10.1.41.207
 k8sproxy1 10.1.41.208
 
-k8sworker1 10.1.41.213
+k8sworker1 10.1.41.217
 k8sworker2 10.1.41.214
 k8sworker3 10.1.41.215
 k8sworker4 10.1.41.216
